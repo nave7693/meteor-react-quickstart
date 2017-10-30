@@ -30,7 +30,7 @@ class Info extends Component {
   renderLinks(links) {
     return links.map((link) => {
       return (
-        <li><a href={ link.url } target="_blank">{ link.title }</a></li>
+        <li key={ link._id } ><a href={ link.url } target="_blank">{ link.title }</a></li>
       );
     });
   }
