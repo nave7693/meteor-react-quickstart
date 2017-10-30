@@ -16,8 +16,8 @@ FlowRouter.route('/', {
   },
 });
 
-FlowRouter.notFound = {
+FlowRouter.route('*', {
   action() {
     mount(Body, { header: () => <UserBadge />, contentPage: () => <NotFound /> });
   },
-};
+});
