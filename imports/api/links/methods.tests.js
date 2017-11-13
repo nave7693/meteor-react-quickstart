@@ -5,7 +5,7 @@
 import { Meteor } from 'meteor/meteor';
 import { assert } from 'meteor/practicalmeteor:chai';
 import { Links } from './links.js';
-import './methods.js';
+import { insertLink } from './methods.js';
 
 if (Meteor.isServer) {
   describe('links methods', function () {
@@ -14,9 +14,7 @@ if (Meteor.isServer) {
     });
 
     it('can add a new link', function () {
-      const addLink = Meteor.server.method_handlers['links.insert'];
-
-      addLink.apply({}, ['meteor.com', 'https://www.meteor.com']);
+      insertLink.call({title: 'meteor.com', url: 'https://www.meteor.com'});
 
       assert.equal(Links.find().count(), 1);
     });

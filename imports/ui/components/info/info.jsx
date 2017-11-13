@@ -3,6 +3,7 @@ import { PropTypes } from 'prop-types';
 import { withTracker } from 'meteor/react-meteor-data';
 import { Links } from '/imports/api/links/links.js';
 import { Meteor } from 'meteor/meteor';
+import { insertLink } from '/imports/api/links/methods.js';
 
 class Info extends Component {
   constructor(props) {
@@ -17,7 +18,10 @@ class Info extends Component {
     const title = target.title;
     const url = target.url;
 
-    Meteor.call('links.insert', title.value, url.value, (error) => {
+    insertLink.call({
+      title: title.value,
+      url: url.value
+    }, (error) => {
       if (error) {
         alert(error.error);
       } else {
