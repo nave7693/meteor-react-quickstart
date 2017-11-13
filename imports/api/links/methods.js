@@ -5,6 +5,7 @@ import { check } from 'meteor/check';
 import { Links } from './links.js';
 import { ValidatedMethod } from 'meteor/mdg:validated-method';
 import { SimpleSchema } from 'simpl-schema/dist/SimpleSchema';
+import { _ } from 'meteor/underscore';
 
 const TITLE_AND_URL = new SimpleSchema({
   title: { type: String },
@@ -22,3 +23,18 @@ export const insertLink = new ValidatedMethod({
     });
   }
 });
+
+const LINKS_METHODS = _.pluck([
+  insertLink,
+], 'name');
+
+// Only allow 5 link operations per connection per second
+if (Meteor.isServer) {
+  DDPRateLimiter.addRule({
+    name(name) {
+      return _.contains(LINKS_METHODS, name);
+    },
+    // Limit per connection ID
+    connectionId() { return true; }
+  }, 5, 1000);
+}
